@@ -52,7 +52,7 @@ impl Screen {
     /// Get the actual number of physical rows that the text that will actually occupy on the
     /// terminal
     #[must_use]
-    pub fn formatted_lines_count(&self) -> usize {
+    pub const fn formatted_lines_count(&self) -> usize {
         self.formatted_lines.len()
     }
     /// Get the number of [`Lines`](std::str::Lines) in the text.
@@ -335,8 +335,7 @@ where
     // * After all the formatting is done, we return the format results.
 
     // Compute the text to be format and set clean_append
-    let to_format;
-    if let Some(attached_text) = opts.attachment {
+    let to_format = if let Some(attached_text) = opts.attachment {
         // Tweak certain parameters if we are joining the last line of already present text with the first line of
         // incoming text.
         //
@@ -354,10 +353,10 @@ where
         s.push_str(attached_text);
         s.push_str(opts.text);
 
-        to_format = s;
+        s
     } else {
-        to_format = opts.text.to_string();
-    }
+        opts.text.to_string()
+    };
 
     let lines = to_format
         .lines()

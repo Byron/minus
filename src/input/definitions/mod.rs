@@ -8,7 +8,7 @@ use std::{collections::HashMap, sync::LazyLock};
 
 fn parse_tokens(mut text: &str) -> Vec<Token> {
     assert!(
-        text.chars().all(|c| c.is_ascii()),
+        text.is_ascii(),
         "'{}': Non ascii sequence found in input sequence",
         text
     );
