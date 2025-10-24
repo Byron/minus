@@ -1,10 +1,9 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, sync::LazyLock};
 
 use super::{Token, MODIFIERS};
 use crossterm::event::{KeyModifiers, MouseButton, MouseEvent, MouseEventKind};
-use once_cell::sync::Lazy;
 
-static MOUSE_ACTIONS: Lazy<HashMap<&str, MouseEventKind>> = Lazy::new(|| {
+static MOUSE_ACTIONS: LazyLock<HashMap<&str, MouseEventKind>> = LazyLock::new(|| {
     let mut map = HashMap::new();
 
     map.insert("left:down", MouseEventKind::Down(MouseButton::Left));

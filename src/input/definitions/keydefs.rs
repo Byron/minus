@@ -1,12 +1,11 @@
 #![allow(dead_code)]
 
 use super::{Token, MODIFIERS};
-use std::collections::HashMap;
+use std::{collections::HashMap, sync::LazyLock};
 
 use crossterm::event::{KeyCode, KeyEvent, KeyEventState, KeyModifiers};
-use once_cell::sync::Lazy;
 
-static SPECIAL_KEYS: Lazy<HashMap<&str, KeyCode>> = Lazy::new(|| {
+static SPECIAL_KEYS: LazyLock<HashMap<&str, KeyCode>> = LazyLock::new(|| {
     let mut map = HashMap::new();
 
     map.insert("enter", KeyCode::Enter);

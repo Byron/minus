@@ -4,8 +4,7 @@ pub mod keydefs;
 pub mod mousedefs;
 
 use crossterm::event::KeyModifiers;
-use once_cell::sync::Lazy;
-use std::collections::HashMap;
+use std::{collections::HashMap, sync::LazyLock};
 
 fn parse_tokens(mut text: &str) -> Vec<Token> {
     assert!(
@@ -52,7 +51,7 @@ fn parse_tokens(mut text: &str) -> Vec<Token> {
     token_list
 }
 
-pub static MODIFIERS: Lazy<HashMap<char, KeyModifiers>> = Lazy::new(|| {
+pub static MODIFIERS: LazyLock<HashMap<char, KeyModifiers>> = LazyLock::new(|| {
     let mut map = HashMap::new();
     map.insert('m', KeyModifiers::ALT);
     map.insert('c', KeyModifiers::CONTROL);

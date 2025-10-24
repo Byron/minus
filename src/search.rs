@@ -61,26 +61,27 @@ use crossterm::{
     style::Attribute,
     terminal::{Clear, ClearType},
 };
-use once_cell::sync::Lazy;
 use regex::Regex;
 use std::collections::BTreeSet;
 use std::{
     convert::{TryFrom, TryInto},
     io::Write,
+    sync::LazyLock,
     time::Duration,
 };
 
 use std::collections::hash_map::RandomState;
 
-static INVERT: Lazy<String> = Lazy::new(|| Attribute::Reverse.to_string());
-static NORMAL: Lazy<String> = Lazy::new(|| Attribute::NoReverse.to_string());
-static ANSI_REGEX: Lazy<Regex> = Lazy::new(|| {
+static INVERT: LazyLock<String> = LazyLock::new(|| Attribute::Reverse.to_string());
+static NORMAL: LazyLock<String> = LazyLock::new(|| Attribute::NoReverse.to_string());
+static ANSI_REGEX: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new("[\\u001b\\u009b]\\[[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]")
         .unwrap()
 });
 
-static WORD: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r#"([\w_]+)|([-?~@#!$%^&*()-+={}\[\]:;\\|'/?<>.,"]+)|\W"#).unwrap());
+static WORD: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r#"([\w_]+)|([-?~@#!$%^&*()-+={}\[\]:;\\|'/?<>.,"]+)|\W"#).unwrap()
+});
 
 #[derive(Clone, Copy, Debug, Eq)]
 #[cfg_attr(docsrs, doc(cfg(feature = "search")))]
