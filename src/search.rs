@@ -6,7 +6,7 @@
 //! - [Keybindings](../index.html#key-bindings-available-at-search-prompt) similar to modern text editors
 //! - Incremental search
 //! - Full regex support for writing advanced search queries
-//! and more...
+//!   and more...
 //!
 //! # Incremental Search
 //! minus supports incrementally searching the text. This means that you can view the search

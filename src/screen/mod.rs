@@ -490,12 +490,12 @@ where
 /// - `line`: The line to format
 /// - `line_numbers`: tells whether to format the line with line numbers.
 /// - `len_line_number`: is the number of digits that number of lines in [`PagerState::lines`] occupy.
-///     For example, this will be 2 if number of lines in [`PagerState::lines`] is 50 and 3 if
-///     number of lines in [`PagerState::lines`] is 500. This is used for calculating the padding
-///     of each displayed line.
+///   For example, this will be 2 if number of lines in [`PagerState::lines`] is 50 and 3 if
+///   number of lines in [`PagerState::lines`] is 500. This is used for calculating the padding
+///   of each displayed line.
 /// - `idx`: is the position index where the line is placed in [`PagerState::lines`].
 /// - `formatted_idx`: is the position index where the line will be placed in the resulting
-///    [`PagerState::formatted_lines`](crate::state::PagerState::formatted_lines)
+///   [`PagerState::formatted_lines`](crate::state::PagerState::formatted_lines)
 /// - `cols`: Number of columns in the terminal
 /// - `search_term`: Contains the regex if a search is active
 ///
