@@ -25,7 +25,7 @@ examples:
  cargo check --example=less-rs --features=dynamic_output,search
 
 lint: _prechecks
-  cargo hack --feature-powerset clippy
+  cargo hack --feature-powerset clippy --all-targets
   
 verify-all: check-fmt build tests examples lint
  @echo "Ready to go"
