@@ -287,9 +287,9 @@ pub fn handle_event(
 
         Command::SetPrompt(ref text) | Command::SendMessage(ref text) => {
             if let Command::SetPrompt(_) = ev {
-                p.prompt = text.to_string();
+                p.prompt = text.clone();
             } else {
-                p.message = Some(text.to_string());
+                p.message = Some(text.clone());
             }
             p.format_prompt();
             if !p.running.lock().is_uninitialized() {

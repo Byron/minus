@@ -83,7 +83,7 @@ static WORD: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r#"([\w_]+)|([-?~@#!$%^&*()-+={}\[\]:;\\|'/?<>.,"]+)|\W"#).unwrap()
 });
 
-#[derive(Clone, Copy, Debug, Eq)]
+#[derive(Clone, Copy, Debug, Default, Eq)]
 #[cfg_attr(docsrs, doc(cfg(feature = "search")))]
 #[allow(clippy::module_name_repetitions)]
 /// Defines modes in which the search can run
@@ -93,13 +93,8 @@ pub enum SearchMode {
     /// Find matches before the current page
     Reverse,
     /// No search active
+    #[default]
     Unknown,
-}
-
-impl Default for SearchMode {
-    fn default() -> Self {
-        Self::Unknown
-    }
 }
 
 impl PartialEq for SearchMode {
