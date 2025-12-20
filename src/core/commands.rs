@@ -6,8 +6,8 @@
 use std::fmt::Debug;
 
 use crate::{
-    input::{InputClassifier, InputEvent},
     ExitStrategy, LineNumbers,
+    input::{InputClassifier, InputEvent},
 };
 
 #[cfg(feature = "search")]

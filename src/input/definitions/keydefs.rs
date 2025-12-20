@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-use super::{Token, MODIFIERS};
+use super::{MODIFIERS, Token};
 use std::{collections::HashMap, sync::LazyLock};
 
 use crossterm::event::{KeyCode, KeyEvent, KeyEventState, KeyModifiers};

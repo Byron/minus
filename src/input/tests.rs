@@ -1,6 +1,6 @@
 #[cfg(feature = "search")]
 use crate::SearchMode;
-use crate::{input::InputEvent, LineNumbers, PagerState};
+use crate::{LineNumbers, PagerState, input::InputEvent};
 use crossterm::event::{
     Event, KeyCode, KeyEvent, KeyEventState, KeyModifiers, MouseEvent, MouseEventKind,
 };

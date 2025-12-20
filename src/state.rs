@@ -4,15 +4,14 @@
 use crate::search::{SearchMode, SearchOpts};
 
 use crate::{
+    ExitStrategy, LineNumbers,
     error::{MinusError, TermError},
     input::{self, HashedEventRegister},
     minus_core::{
-        self,
-        utils::{display::AppendStyle, LinesRowMap},
-        CommandQueue,
+        self, CommandQueue,
+        utils::{LinesRowMap, display::AppendStyle},
     },
     screen::{self, Screen},
-    ExitStrategy, LineNumbers,
 };
 use crossterm::{terminal, tty::IsTty};
 #[cfg(feature = "search")]
@@ -23,9 +22,9 @@ use std::collections::BTreeSet;
 use std::{
     collections::hash_map::RandomState,
     convert::TryInto,
-    io::stdout,
     io::Stdout,
-    sync::{atomic::AtomicBool, Arc},
+    io::stdout,
+    sync::{Arc, atomic::AtomicBool},
 };
 
 use crate::minus_core::{commands::Command, ev_handler::handle_event};

@@ -1,5 +1,5 @@
 mod unterminated {
-    use crate::screen::{format_text_block, FormatOpts, Rows};
+    use crate::screen::{FormatOpts, Rows, format_text_block};
 
     const fn get_append_opts_template(text: &'_ str) -> FormatOpts<'_, Rows> {
         FormatOpts {

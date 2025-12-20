@@ -1,6 +1,6 @@
 use std::{collections::HashMap, sync::LazyLock};
 
-use super::{Token, MODIFIERS};
+use super::{MODIFIERS, Token};
 use crossterm::event::{KeyModifiers, MouseButton, MouseEvent, MouseEventKind};
 
 static MOUSE_ACTIONS: LazyLock<HashMap<&str, MouseEventKind>> = LazyLock::new(|| {

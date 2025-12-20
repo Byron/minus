@@ -2,7 +2,7 @@
 name = "minus"
 version = "5.6.1"
 authors = ["Arijit Dey <arijid79@gmail.com>"]
-edition = "2018"
+edition = "2024"
 license = "MIT OR Apache-2.0"
 documentation = "https://docs.rs/minus"
 repository = "https://github.com/AMythicDev/minus"

@@ -2,17 +2,17 @@
 
 use std::convert::TryInto;
 use std::io::Write;
-use std::sync::{atomic::AtomicBool, Arc};
+use std::sync::{Arc, atomic::AtomicBool};
 
 #[cfg(feature = "search")]
 use parking_lot::{Condvar, Mutex};
 
-use super::utils::display::{self, AppendStyle};
 use super::CommandQueue;
+use super::utils::display::{self, AppendStyle};
 use super::{commands::Command, utils::term};
 #[cfg(feature = "search")]
 use crate::search;
-use crate::{error::MinusError, input::InputEvent, PagerState};
+use crate::{PagerState, error::MinusError, input::InputEvent};
 
 /// Respond based on the type of command
 ///
@@ -336,12 +336,12 @@ pub fn handle_event(
 mod tests {
     use super::super::commands::Command;
     use super::handle_event;
-    use crate::{minus_core::CommandQueue, ExitStrategy, PagerState, RunMode};
+    use crate::{ExitStrategy, PagerState, RunMode, minus_core::CommandQueue};
     #[cfg(feature = "search")]
     use parking_lot::{Condvar, Mutex};
     #[cfg(feature = "search")]
     use std::sync::LazyLock;
-    use std::sync::{atomic::AtomicBool, Arc};
+    use std::sync::{Arc, atomic::AtomicBool};
 
     // Tests constants
     #[cfg(feature = "search")]

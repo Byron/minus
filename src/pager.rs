@@ -1,6 +1,6 @@
 //! Proivdes the [Pager] type
 
-use crate::{error::MinusError, input, minus_core::commands::Command, ExitStrategy, LineNumbers};
+use crate::{ExitStrategy, LineNumbers, error::MinusError, input, minus_core::commands::Command};
 use crossbeam_channel::{Receiver, Sender};
 use std::fmt;
 

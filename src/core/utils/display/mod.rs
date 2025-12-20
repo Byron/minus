@@ -10,7 +10,7 @@ use std::{cmp::Ordering, convert::TryInto, io::Write};
 
 use super::term;
 use crate::screen::Row;
-use crate::{error::MinusError, minus_core, LineNumbers, PagerState};
+use crate::{LineNumbers, PagerState, error::MinusError, minus_core};
 
 /// How should the incoming text be drawn on the screen
 #[derive(Debug, PartialEq, Eq)]
