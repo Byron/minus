@@ -1,5 +1,5 @@
 use crossterm::style::{Color, ResetColor, SetForegroundColor};
-use minus::{error::MinusError, page_all, Pager};
+use minus::{Pager, error::MinusError, page_all};
 use std::fmt::Write;
 
 fn main() -> Result<(), MinusError> {

@@ -11,25 +11,25 @@
 #[cfg(feature = "static_output")]
 use crate::minus_core::utils::display;
 use crate::{
+    Pager, PagerState,
     error::MinusError,
     input::InputEvent,
     minus_core::{
+        RunMode,
         commands::Command,
         ev_handler::handle_event,
         utils::{display::draw_full, term},
-        RunMode,
     },
-    Pager, PagerState,
 };
 
 use crossbeam_channel::{Receiver, Sender, TrySendError};
 use crossterm::event;
 use std::{
-    io::{stdout, Stdout},
+    io::{Stdout, stdout},
     panic,
     sync::{
-        atomic::{AtomicBool, Ordering},
         Arc,
+        atomic::{AtomicBool, Ordering},
     },
 };
 
@@ -40,7 +40,7 @@ use {super::utils::display::write_raw_lines, crossterm::tty::IsTty};
 use parking_lot::Condvar;
 use parking_lot::Mutex;
 
-use super::{utils::display::draw_for_change, CommandQueue, RUNMODE};
+use super::{CommandQueue, RUNMODE, utils::display::draw_for_change};
 
 /// The main entry point of minus
 ///
@@ -88,7 +88,10 @@ pub fn init_core(pager: &Pager, rm: RunMode) -> std::result::Result<(), MinusErr
 
     {
         let mut runmode = super::RUNMODE.lock();
-        assert!(runmode.is_uninitialized(), "Failed to set the RUNMODE. This is caused probably because another instance of minus is already running");
+        assert!(
+            runmode.is_uninitialized(),
+            "Failed to set the RUNMODE. This is caused probably because another instance of minus is already running"
+        );
         *runmode = rm;
         drop(runmode);
     }

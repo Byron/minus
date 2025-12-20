@@ -53,8 +53,8 @@
 #![allow(unused_imports)]
 use crate::minus_core::utils::{display, term};
 use crate::screen::Screen;
-use crate::{error::MinusError, input::HashedEventRegister, screen};
 use crate::{LineNumbers, PagerState};
+use crate::{error::MinusError, input::HashedEventRegister, screen};
 use crossterm::{
     cursor::{self, MoveTo},
     event::{self, Event, KeyCode, KeyEvent, KeyEventKind, KeyModifiers},
@@ -773,8 +773,8 @@ pub(crate) fn next_nth_match(
 mod tests {
     mod input_handling {
         use crate::{
-            search::{handle_key_press, InputStatus, SearchOpts},
             SearchMode,
+            search::{InputStatus, SearchOpts, handle_key_press},
         };
         use crossterm::{
             cursor::MoveTo,
@@ -1076,8 +1076,8 @@ mod tests {
     mod highlighting {
         use std::collections::BTreeSet;
 
-        use crate::search::{highlight_line_matches, next_nth_match, INVERT, NORMAL};
         use crate::PagerState;
+        use crate::search::{INVERT, NORMAL, highlight_line_matches, next_nth_match};
         use crossterm::style::Attribute;
         use regex::Regex;
 
@@ -1214,12 +1214,12 @@ eros.",
                 assert_eq!(
                     res.0,
                     format!(
-                    "{i}{e}test{n}{nn} this {e}is a {i}te{NONE}st{n} again {e}yeah{nn} {i}test{n}",
-                    e = ESC,
-                    i = *INVERT,
-                    n = *NORMAL,
-                    nn = NONE
-                )
+                        "{i}{e}test{n}{nn} this {e}is a {i}te{NONE}st{n} again {e}yeah{nn} {i}test{n}",
+                        e = ESC,
+                        i = *INVERT,
+                        n = *NORMAL,
+                        nn = NONE
+                    )
                 );
             }
 

@@ -233,9 +233,11 @@ fn draw_short_no_line_numbers() {
 
     assert!(draw_full(&mut out, &mut pager).is_ok());
 
-    assert!(String::from_utf8(out)
-        .expect("Should have written valid UTF-8")
-        .contains("\rA line\n\rAnother line"));
+    assert!(
+        String::from_utf8(out)
+            .expect("Should have written valid UTF-8")
+            .contains("\rA line\n\rAnother line")
+    );
     assert_eq!(pager.upper_mark, 0);
 
     let mut out = Vec::with_capacity(lines.len());
@@ -245,9 +247,11 @@ fn draw_short_no_line_numbers() {
 
     // The number of lines is less than 'rows' so 'upper_mark' will be 0 even
     // if we set it to 1. This is done because everything can be displayed without problems.
-    assert!(String::from_utf8(out)
-        .expect("Should have written valid UTF-8")
-        .contains("\rA line\n\rAnother line"));
+    assert!(
+        String::from_utf8(out)
+            .expect("Should have written valid UTF-8")
+            .contains("\rA line\n\rAnother line")
+    );
     assert_eq!(pager.upper_mark, 0);
 }
 
@@ -264,9 +268,11 @@ fn draw_long_no_line_numbers() {
 
     assert!(draw_full(&mut out, &mut pager).is_ok());
 
-    assert!(String::from_utf8(out)
-        .expect("Should have written valid UTF-8")
-        .contains("\rA line\n\rAnother line"));
+    assert!(
+        String::from_utf8(out)
+            .expect("Should have written valid UTF-8")
+            .contains("\rA line\n\rAnother line")
+    );
     assert_eq!(pager.upper_mark, 0);
 
     // This ensures that asking for a position other than 0 works.
@@ -275,9 +281,11 @@ fn draw_long_no_line_numbers() {
 
     assert!(draw_full(&mut out, &mut pager).is_ok());
 
-    assert!(String::from_utf8(out)
-        .expect("Should have written valid UTF-8")
-        .contains("\rAnother line\n\rThird line"));
+    assert!(
+        String::from_utf8(out)
+            .expect("Should have written valid UTF-8")
+            .contains("\rAnother line\n\rThird line")
+    );
     assert_eq!(pager.upper_mark, 1);
 
     // This test ensures that as much text as possible will be displayed, even
@@ -287,9 +295,11 @@ fn draw_long_no_line_numbers() {
 
     assert!(draw_full(&mut out, &mut pager).is_ok());
 
-    assert!(String::from_utf8(out)
-        .expect("Should have written valid UTF-8")
-        .contains("\rThird line\n\rFourth line"));
+    assert!(
+        String::from_utf8(out)
+            .expect("Should have written valid UTF-8")
+            .contains("\rThird line\n\rFourth line")
+    );
     assert_eq!(pager.upper_mark, 2);
 }
 
@@ -303,9 +313,11 @@ fn draw_short_with_line_numbers() {
     pager.format_lines();
 
     assert!(draw_full(&mut out, &mut pager).is_ok());
-    assert!(String::from_utf8(out)
-        .expect("Should have written valid UTF-8")
-        .contains("\r     1. A line\n\r     2. Another line"));
+    assert!(
+        String::from_utf8(out)
+            .expect("Should have written valid UTF-8")
+            .contains("\r     1. A line\n\r     2. Another line")
+    );
     assert_eq!(pager.upper_mark, 0);
 
     let mut out = Vec::with_capacity(lines.len());
@@ -315,9 +327,11 @@ fn draw_short_with_line_numbers() {
 
     // The number of lines is less than 'rows' so 'upper_mark' will be 0 even
     // if we set it to 1. This is done because everything can be displayed without problems.
-    assert!(String::from_utf8(out)
-        .expect("Should have written valid UTF-8")
-        .contains("\r     1. A line\n\r     2. Another line"));
+    assert!(
+        String::from_utf8(out)
+            .expect("Should have written valid UTF-8")
+            .contains("\r     1. A line\n\r     2. Another line")
+    );
     assert_eq!(pager.upper_mark, 0);
 }
 
@@ -335,9 +349,11 @@ fn draw_long_with_line_numbers() {
 
     assert!(draw_full(&mut out, &mut pager).is_ok());
 
-    assert!(String::from_utf8(out)
-        .expect("Should have written valid UTF-8")
-        .contains("\r     1. A line\n\r     2. Another line"));
+    assert!(
+        String::from_utf8(out)
+            .expect("Should have written valid UTF-8")
+            .contains("\r     1. A line\n\r     2. Another line")
+    );
     assert_eq!(pager.upper_mark, 0);
 
     // This ensures that asking for a position other than 0 works.
@@ -346,9 +362,11 @@ fn draw_long_with_line_numbers() {
 
     assert!(draw_full(&mut out, &mut pager).is_ok());
 
-    assert!(String::from_utf8(out)
-        .expect("Should have written valid UTF-8")
-        .contains("\r     2. Another line\n\r     3. Third line"));
+    assert!(
+        String::from_utf8(out)
+            .expect("Should have written valid UTF-8")
+            .contains("\r     2. Another line\n\r     3. Third line")
+    );
     assert_eq!(pager.upper_mark, 1);
 
     // This test ensures that as much text as possible will be displayed, even
@@ -358,9 +376,11 @@ fn draw_long_with_line_numbers() {
 
     assert!(draw_full(&mut out, &mut pager).is_ok());
 
-    assert!(String::from_utf8(out)
-        .expect("Should have written valid UTF-8")
-        .contains("\r     3. Third line\n\r     4. Fourth line"));
+    assert!(
+        String::from_utf8(out)
+            .expect("Should have written valid UTF-8")
+            .contains("\r     3. Third line\n\r     4. Fourth line")
+    );
     assert_eq!(pager.upper_mark, 2);
 }
 
@@ -439,9 +459,11 @@ fn test_draw_no_overflow() {
     pager.screen.orig_text = TEXT.to_string();
     pager.format_lines();
     draw_full(&mut out, &mut pager).unwrap();
-    assert!(String::from_utf8(out)
-        .expect("Should have written valid UTF-8")
-        .contains(TEXT));
+    assert!(
+        String::from_utf8(out)
+            .expect("Should have written valid UTF-8")
+            .contains(TEXT)
+    );
 }
 
 #[cfg(test)]

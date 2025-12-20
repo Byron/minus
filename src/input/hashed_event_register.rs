@@ -8,7 +8,7 @@ use super::{InputClassifier, InputEvent};
 use crate::PagerState;
 use crossterm::event::{Event, MouseEvent};
 use std::{
-    collections::hash_map::RandomState, collections::HashMap, hash::BuildHasher, hash::Hash,
+    collections::HashMap, collections::hash_map::RandomState, hash::BuildHasher, hash::Hash,
     sync::Arc,
 };
 

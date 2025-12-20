@@ -2,8 +2,8 @@
 //!
 //! This module is still a work is progress and is subject to change.
 use crate::{
-    minus_core::{self, utils::LinesRowMap},
     LineNumbers,
+    minus_core::{self, utils::LinesRowMap},
 };
 #[cfg(feature = "search")]
 use regex::Regex;

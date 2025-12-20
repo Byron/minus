@@ -1,6 +1,6 @@
 // Test the implementation of std::fmt::Write on Pager
 mod fmt_write {
-    use crate::{minus_core::commands::Command, Pager};
+    use crate::{Pager, minus_core::commands::Command};
     use std::fmt::Write;
 
     #[test]
@@ -229,7 +229,7 @@ mod pager_append_str {
 fn exit_callback() {
     use crate::PagerState;
     use std::sync::atomic::Ordering;
-    use std::sync::{atomic::AtomicBool, Arc};
+    use std::sync::{Arc, atomic::AtomicBool};
 
     let mut ps = PagerState::new().unwrap();
     let exited = Arc::new(AtomicBool::new(false));
@@ -244,7 +244,7 @@ fn exit_callback() {
 
 mod emit_events {
     // Check functions emit correct events on function calls
-    use crate::{minus_core::commands::Command, ExitStrategy, LineNumbers, Pager};
+    use crate::{ExitStrategy, LineNumbers, Pager, minus_core::commands::Command};
 
     const TEST_STR: &str = "This is sample text";
     #[test]

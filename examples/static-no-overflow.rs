@@ -1,5 +1,5 @@
 use minus::error::MinusError;
-use minus::{page_all, Pager};
+use minus::{Pager, page_all};
 use std::fmt::Write;
 
 fn main() -> Result<(), MinusError> {
