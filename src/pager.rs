@@ -373,6 +373,26 @@ impl Pager {
         self.tx.send(Command::FollowOutput(follow_output))?;
         Ok(())
     }
+
+    /// Set whether to use the alternate screen buffer
+    ///
+    /// When set to `true` (the default), minus will use the terminal's alternate screen
+    /// buffer. This means that when the pager exits, the original terminal content
+    /// will be restored.
+    ///
+    /// When set to `false`, minus will display content directly in the main screen
+    /// buffer. The paged content will remain visible after the pager exits, similar
+    /// to how `cat` works.
+    ///
+    /// This setting must be configured before starting the pager. Changing it
+    /// while the pager is running has no effect.
+    ///
+    /// # Errors
+    /// This function will return a [`Err(MinusError::Communication)`](MinusError::Communication) if the data
+    /// could not be sent to the receiver
+    pub fn set_alternate_screen(&self, value: bool) -> Result<(), MinusError> {
+        Ok(self.tx.send(Command::SetAlternateScreen(value))?)
+    }
 }
 
 impl Default for Pager {

@@ -153,6 +153,8 @@ pub struct PagerState {
     /// Value for follow mode.
     /// See [follow_output](crate::pager::Pager::follow_output) for more info on follow mode.
     pub(crate) follow_output: bool,
+    /// Whether to use the alternate screen buffer
+    pub(crate) use_alternate_screen: bool,
 }
 
 impl PagerState {
@@ -204,6 +206,7 @@ impl PagerState {
             prefix_num: String::new(),
             lines_to_row_map: LinesRowMap::new(),
             follow_output: false,
+            use_alternate_screen: true,
         };
 
         state.format_prompt();

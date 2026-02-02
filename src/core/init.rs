@@ -116,7 +116,7 @@ pub fn init_core(pager: &Pager, rm: RunMode) -> std::result::Result<(), MinusErr
     }
 
     // Setup terminal, adjust line wraps and get rows
-    term::setup(&out)?;
+    term::setup(&out, ps.use_alternate_screen)?;
 
     // Has the user quit
     let is_exited = Arc::new(AtomicBool::new(false));
@@ -128,9 +128,11 @@ pub fn init_core(pager: &Pager, rm: RunMode) -> std::result::Result<(), MinusErr
             is_exited2.store(true, std::sync::atomic::Ordering::SeqCst);
             // While silently ignoring error is considered a bad practice, we are forced to do it here
             // as we cannot use the ? and panicking here will (probably?) cause an immediate abort
+            // Always restore alternate screen on panic for safety
             drop(term::cleanup(
                 stdout(),
                 &crate::ExitStrategy::PagerQuit,
+                true,
                 true,
             ));
             panic_hook(pinfo);
@@ -166,7 +168,8 @@ pub fn init_core(pager: &Pager, rm: RunMode) -> std::result::Result<(), MinusErr
             if res.is_err() {
                 is_exited3.store(true, std::sync::atomic::Ordering::SeqCst);
                 *RUNMODE.lock() = RunMode::Uninitialized;
-                term::cleanup(out.as_ref(), &crate::ExitStrategy::PagerQuit, true)?;
+                let use_alt_screen = p1.lock().use_alternate_screen;
+                term::cleanup(out.as_ref(), &crate::ExitStrategy::PagerQuit, true, use_alt_screen)?;
             }
             res
         });
@@ -183,7 +186,8 @@ pub fn init_core(pager: &Pager, rm: RunMode) -> std::result::Result<(), MinusErr
             if res.is_err() {
                 is_exited4.store(true, std::sync::atomic::Ordering::SeqCst);
                 *RUNMODE.lock() = RunMode::Uninitialized;
-                term::cleanup(out_copy.as_ref(), &crate::ExitStrategy::PagerQuit, true)?;
+                let use_alt_screen = ps_mutex.lock().use_alternate_screen;
+                term::cleanup(out_copy.as_ref(), &crate::ExitStrategy::PagerQuit, true, use_alt_screen)?;
             }
             res
         });
@@ -274,7 +278,8 @@ fn start_reactor(
                     // Cleanup the screen
                     //
                     // This is not needed in dynamic paging because this is already handled by handle_event
-                    term::cleanup(&mut out_lock, &ps.lock().exit_strategy, true)?;
+                    let ps_guard = ps.lock();
+                    term::cleanup(&mut out_lock, &ps_guard.exit_strategy, true, ps_guard.use_alternate_screen)?;
 
                     let mut rm = RUNMODE.lock();
                     *rm = RunMode::Uninitialized;

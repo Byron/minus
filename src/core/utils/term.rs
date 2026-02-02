@@ -25,7 +25,7 @@ use std::io;
 /// [raw mode]: ../../../crossterm/terminal/index.html#raw-mode
 // This function should be kept close to `cleanup` to help ensure both are
 // doing the opposite of the other.
-pub fn setup(stdout: &io::Stdout) -> std::result::Result<(), SetupError> {
+pub fn setup(stdout: &io::Stdout, use_alternate_screen: bool) -> std::result::Result<(), SetupError> {
     let mut out = stdout.lock();
 
     if out.is_tty() {
@@ -34,8 +34,10 @@ pub fn setup(stdout: &io::Stdout) -> std::result::Result<(), SetupError> {
         Err(SetupError::InvalidTerminal)
     }?;
 
-    execute!(out, terminal::EnterAlternateScreen)
-        .map_err(|e| SetupError::AlternateScreen(e.into()))?;
+    if use_alternate_screen {
+        execute!(out, terminal::EnterAlternateScreen)
+            .map_err(|e| SetupError::AlternateScreen(e.into()))?;
+    }
     terminal::enable_raw_mode().map_err(|e| SetupError::RawMode(e.into()))?;
     execute!(out, event::EnableMouseCapture)
         .map_err(|e| SetupError::EnableMouseCapture(e.into()))?;
@@ -60,6 +62,7 @@ pub fn cleanup(
     mut out: impl io::Write,
     es: &crate::ExitStrategy,
     cleanup_screen: bool,
+    use_alternate_screen: bool,
 ) -> std::result::Result<(), CleanupError> {
     if cleanup_screen {
         // Reverse order of setup.
@@ -67,8 +70,10 @@ pub fn cleanup(
         execute!(out, event::DisableMouseCapture)
             .map_err(|e| CleanupError::DisableMouseCapture(e.into()))?;
         terminal::disable_raw_mode().map_err(|e| CleanupError::DisableRawMode(e.into()))?;
-        execute!(out, terminal::LeaveAlternateScreen)
-            .map_err(|e| CleanupError::LeaveAlternateScreen(e.into()))?;
+        if use_alternate_screen {
+            execute!(out, terminal::LeaveAlternateScreen)
+                .map_err(|e| CleanupError::LeaveAlternateScreen(e.into()))?;
+        }
     }
 
     if *es == crate::ExitStrategy::ProcessQuit {

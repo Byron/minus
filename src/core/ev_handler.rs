@@ -42,7 +42,7 @@ pub fn handle_event(
         Command::UserInput(InputEvent::Exit) => {
             p.exit();
             is_exited.store(true, std::sync::atomic::Ordering::SeqCst);
-            term::cleanup(&mut out, &p.exit_strategy, true)?;
+            term::cleanup(&mut out, &p.exit_strategy, true, p.use_alternate_screen)?;
         }
         Command::UserInput(InputEvent::UpdateUpperMark(mut um)) => {
             let line_count = p.screen.formatted_lines_count();
@@ -308,6 +308,7 @@ pub fn handle_event(
             display::write_prompt(out, &p.displayed_prompt, p.rows.try_into().unwrap())?;
         }
         Command::SetExitStrategy(es) => p.exit_strategy = es,
+        Command::SetAlternateScreen(val) => p.use_alternate_screen = val,
         Command::LineWrapping(lw) => {
             p.screen.line_wrapping = lw;
             p.format_lines();
@@ -530,5 +531,27 @@ mod tests {
         )
         .unwrap();
         assert_eq!(ps.exit_callbacks.len(), 1);
+    }
+
+    #[test]
+    fn set_alternate_screen() {
+        let mut ps = PagerState::new().unwrap();
+        assert!(ps.use_alternate_screen);
+
+        let ev = Command::SetAlternateScreen(false);
+        let mut out = Vec::new();
+        let mut command_queue = CommandQueue::new_zero();
+
+        handle_event(
+            ev,
+            &mut out,
+            &mut ps,
+            &mut command_queue,
+            &Arc::new(AtomicBool::new(false)),
+            #[cfg(feature = "search")]
+            &UIA,
+        )
+        .unwrap();
+        assert!(!ps.use_alternate_screen);
     }
 }
