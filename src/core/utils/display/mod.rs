@@ -10,7 +10,7 @@ use std::{cmp::Ordering, convert::TryInto, io::Write};
 
 use super::term;
 use crate::screen::Row;
-use crate::{LineNumbers, PagerState, error::MinusError, minus_core};
+use crate::{ExitPrintMode, LineNumbers, PagerState, error::MinusError, minus_core};
 
 /// How should the incoming text be drawn on the screen
 #[derive(Debug, PartialEq, Eq)]
@@ -377,6 +377,42 @@ pub fn write_raw_lines(
         writeln!(out, "{}{line}", initial.unwrap_or(""))?;
     }
     Ok(())
+}
+
+/// Prints content to stdout on pager exit based on the configured exit print mode.
+pub fn print_exit_content(out: &mut impl Write, ps: &PagerState) -> Result<(), MinusError> {
+    match ps.exit_print_mode {
+        ExitPrintMode::Nothing => Ok(()),
+
+        ExitPrintMode::LastPage => {
+            let writable_rows = ps.rows.saturating_sub(1);
+            let line_count = ps.screen.formatted_lines_count();
+            let lower_mark = ps.upper_mark.saturating_add(writable_rows.min(line_count));
+            let effective_lower = lower_mark.min(line_count);
+
+            let display_lines = ps
+                .screen
+                .get_formatted_lines_with_bounds(ps.upper_mark, effective_lower);
+            write_raw_lines(out, display_lines, None)?;
+            out.flush()?;
+            Ok(())
+        }
+
+        ExitPrintMode::UpToLastSeen => {
+            let writable_rows = ps.rows.saturating_sub(1);
+            let line_count = ps.screen.formatted_lines_count();
+            let lower_mark = ps.upper_mark.saturating_add(writable_rows.min(line_count));
+            let effective_lower = lower_mark.min(line_count);
+
+            // Print from beginning to last seen line
+            let display_lines = ps
+                .screen
+                .get_formatted_lines_with_bounds(0, effective_lower);
+            write_raw_lines(out, display_lines, None)?;
+            out.flush()?;
+            Ok(())
+        }
+    }
 }
 
 #[cfg(test)]

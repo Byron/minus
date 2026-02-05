@@ -155,6 +155,8 @@ pub struct PagerState {
     pub(crate) follow_output: bool,
     /// Whether to use the alternate screen buffer
     pub(crate) use_alternate_screen: bool,
+    /// What content to print when exiting the pager
+    pub(crate) exit_print_mode: crate::ExitPrintMode,
 }
 
 impl PagerState {
@@ -207,6 +209,7 @@ impl PagerState {
             lines_to_row_map: LinesRowMap::new(),
             follow_output: false,
             use_alternate_screen: true,
+            exit_print_mode: crate::ExitPrintMode::Nothing,
         };
 
         state.format_prompt();

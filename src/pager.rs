@@ -1,6 +1,9 @@
 //! Proivdes the [Pager] type
 
-use crate::{ExitStrategy, LineNumbers, error::MinusError, input, minus_core::commands::Command};
+use crate::{
+    ExitPrintMode, ExitStrategy, LineNumbers, error::MinusError, input,
+    minus_core::commands::Command,
+};
 use crossbeam_channel::{Receiver, Sender};
 use std::fmt;
 
@@ -392,6 +395,22 @@ impl Pager {
     /// could not be sent to the receiver
     pub fn set_alternate_screen(&self, value: bool) -> Result<(), MinusError> {
         Ok(self.tx.send(Command::SetAlternateScreen(value))?)
+    }
+
+    /// Set what content to print when exiting the pager
+    ///
+    /// This controls what gets printed when exiting with alternate screen enabled:
+    /// - [`ExitPrintMode::Nothing`] (default): Return to original terminal state
+    /// - [`ExitPrintMode::LastPage`]: Print only the last visible page
+    /// - [`ExitPrintMode::UpToLastSeen`]: Print lines 1 through the last seen line
+    ///
+    /// **Note:** Only effective when `use_alternate_screen` is `true`.
+    ///
+    /// # Errors
+    /// This function will return a [`Err(MinusError::Communication)`](MinusError::Communication) if the data
+    /// could not be sent to the receiver
+    pub fn set_exit_print_mode(&self, mode: ExitPrintMode) -> Result<(), MinusError> {
+        Ok(self.tx.send(Command::SetExitPrintMode(mode))?)
     }
 }
 

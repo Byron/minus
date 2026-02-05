@@ -291,5 +291,19 @@ impl std::ops::Not for LineNumbers {
     }
 }
 
+/// Defines what content to print when exiting the pager with alternate screen mode.
+///
+/// This option only has effect when `use_alternate_screen` is `true`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum ExitPrintMode {
+    /// Do not print anything on exit (default). Terminal returns to original state.
+    #[default]
+    Nothing,
+    /// Print only the last visible page when exiting.
+    LastPage,
+    /// Print everything from line 1 up to the last seen line.
+    UpToLastSeen,
+}
+
 #[cfg(test)]
 mod tests;

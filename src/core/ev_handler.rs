@@ -12,7 +12,8 @@ use super::utils::display::{self, AppendStyle};
 use super::{commands::Command, utils::term};
 #[cfg(feature = "search")]
 use crate::search;
-use crate::{PagerState, error::MinusError, input::InputEvent};
+use crate::{ExitPrintMode, PagerState, error::MinusError, input::InputEvent};
+use crossterm::{execute, terminal};
 
 /// Respond based on the type of command
 ///
@@ -42,7 +43,17 @@ pub fn handle_event(
         Command::UserInput(InputEvent::Exit) => {
             p.exit();
             is_exited.store(true, std::sync::atomic::Ordering::SeqCst);
-            term::cleanup(&mut out, &p.exit_strategy, true, p.use_alternate_screen)?;
+
+            // Print exit content before cleanup when using alternate screen
+            if p.use_alternate_screen && p.exit_print_mode != ExitPrintMode::Nothing {
+                // Leave alternate screen first so we print to main screen
+                execute!(out, terminal::LeaveAlternateScreen)?;
+                display::print_exit_content(&mut out, p)?;
+                // Cleanup without leaving alternate screen again
+                term::cleanup(&mut out, &p.exit_strategy, true, false)?;
+            } else {
+                term::cleanup(&mut out, &p.exit_strategy, true, p.use_alternate_screen)?;
+            }
         }
         Command::UserInput(InputEvent::UpdateUpperMark(mut um)) => {
             let line_count = p.screen.formatted_lines_count();
@@ -309,6 +320,7 @@ pub fn handle_event(
         }
         Command::SetExitStrategy(es) => p.exit_strategy = es,
         Command::SetAlternateScreen(val) => p.use_alternate_screen = val,
+        Command::SetExitPrintMode(mode) => p.exit_print_mode = mode,
         Command::LineWrapping(lw) => {
             p.screen.line_wrapping = lw;
             p.format_lines();

@@ -6,7 +6,7 @@
 use std::fmt::Debug;
 
 use crate::{
-    ExitStrategy, LineNumbers,
+    ExitPrintMode, ExitStrategy, LineNumbers,
     input::{InputClassifier, InputEvent},
 };
 
@@ -38,6 +38,7 @@ pub enum Command {
     SetInputClassifier(Box<dyn InputClassifier + Send + Sync + 'static>),
     AddExitCallback(Box<dyn FnMut() + Send + Sync + 'static>),
     SetAlternateScreen(bool),
+    SetExitPrintMode(ExitPrintMode),
     #[cfg(feature = "static_output")]
     SetRunNoOverflow(bool),
     #[cfg(feature = "search")]
@@ -60,6 +61,7 @@ impl PartialEq for Command {
             (Self::ShowPrompt(d1), Self::ShowPrompt(d2)) => d1 == d2,
             (Self::SetExitStrategy(d1), Self::SetExitStrategy(d2)) => d1 == d2,
             (Self::SetAlternateScreen(d1), Self::SetAlternateScreen(d2)) => d1 == d2,
+            (Self::SetExitPrintMode(d1), Self::SetExitPrintMode(d2)) => d1 == d2,
             #[cfg(feature = "static_output")]
             (Self::SetRunNoOverflow(d1), Self::SetRunNoOverflow(d2)) => d1 == d2,
             (Self::SetInputClassifier(_), Self::SetInputClassifier(_))
@@ -93,6 +95,7 @@ impl Debug for Command {
             Self::UserInput(input) => write!(f, "UserInput({input:?})"),
             Self::FollowOutput(follow_output) => write!(f, "FollowOutput({follow_output:?})"),
             Self::SetAlternateScreen(val) => write!(f, "SetAlternateScreen({val:?})"),
+            Self::SetExitPrintMode(mode) => write!(f, "SetExitPrintMode({mode:?})"),
         }
     }
 }
